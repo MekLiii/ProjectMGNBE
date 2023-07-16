@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using ProjectMGN.Interfaces;
 using ProjectMGN.Services;
 using ProjectMGN.Db;
 using Microsoft.EntityFrameworkCore;
 using ProjectMGN.Repository;
 using ProjectMGN.Interfaces.Repositories;
 using ProjectMGN.Interfaces.Services;
+using ProjectMGN.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,14 +17,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-
-}).AddJwtBearer(o =>
-{
+Console.WriteLine(builder.Configuration["Jwt:Key"]);
     o.TokenValidationParameters = new TokenValidationParameters
     {
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
@@ -34,19 +29,23 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.Zero,
     };
 });
-builder.Services.AddAuthentication();
-builder.Services.AddScoped<IToken, TokenService>();
+
 builder.Services.AddDbContext<ProjectMGNDB>(options =>
 {
-    options.UseSqlServer("Server=localhost\\MGNSQLserver,1433;Database=MGNProject;User Id=sa;password=#NewPassword123;Trusted_Connection=False;");
+    options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
 });
-builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IToken, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 
 var app = builder.Build();
+app.UseMiddleware<JwtMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -54,11 +53,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
-app.UseAuthorization();
+
+
 
 
 app.MapControllers();

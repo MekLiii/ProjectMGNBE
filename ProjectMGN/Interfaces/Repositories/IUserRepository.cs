@@ -9,5 +9,6 @@ namespace ProjectMGN.Interfaces.Repositories
         void RegisterUser(User user);
         void UnregisterUser(User user);
         User Login(LoginRequest request);
+        int GetUserById(int id);
     }
 }

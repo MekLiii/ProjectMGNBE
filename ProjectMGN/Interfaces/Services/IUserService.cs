@@ -8,5 +8,6 @@ namespace ProjectMGN.Interfaces.Services
     {
         public void RegisterUser(User request);
         public LoginResponse LoginService(LoginRequest request);
+        public int GetUserById(int id); 
     }
 }

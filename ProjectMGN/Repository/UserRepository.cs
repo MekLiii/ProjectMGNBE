@@ -19,7 +19,7 @@ namespace ProjectMGN.Repository
         }
         private bool CheckIfUserAlreadyExists(User user)
         {
-            if (user == null)s
+            if (user == null)
             {
                 return false;
             }
@@ -49,11 +49,20 @@ namespace ProjectMGN.Repository
                 throw new InvalidOperationException("Password is incorrect");
             }
             return user;
-            
+
         }
         public void UnregisterUser(User user)
         {
             throw new NotImplementedException();
+        }
+        public int GetUserById(int id)
+        {
+            User user = _dbContext.Users.FirstOrDefault(user => user.Id == id);
+            if(user == null)
+            {
+                throw new InvalidOperationException("User not found");
+            }
+            return user.Id;
         }
     }
 }

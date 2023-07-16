@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectMGN.Db;
 using ProjectMGN.DTOS.Request;
@@ -23,7 +24,8 @@ namespace ProjectMGN.Controllers
             
         }
 
-
+        [AllowAnonymous]
+        //[Authorize]
         [HttpPost("createuser")]
         public IActionResult RegisterUser(User user)
         {
@@ -37,6 +39,7 @@ namespace ProjectMGN.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult Login(LoginRequest loginRequest)
         {
@@ -50,6 +53,12 @@ namespace ProjectMGN.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+        [HttpGet("test")]
+        [Authorize]
+        public IActionResult Test()
+        {
+            return Ok("Test");
         }
     }
 }
