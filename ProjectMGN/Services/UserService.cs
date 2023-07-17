@@ -35,13 +35,9 @@ namespace ProjectMGN.Services
 
             LoginResponse loggedUser = new()
             {
-                Email = user.Email,
                 Token = token,
-                UserName = user.UserName
             };
-            Console.WriteLine(loggedUser.Token);
 
-            //return loggedUser;
             return loggedUser;
         }
         public int GetUserById(int id)

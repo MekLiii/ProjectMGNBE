@@ -2,6 +2,7 @@
 using ProjectMGN.DTOS.Response;
 using ProjectMGN.Models;
 
+
 namespace ProjectMGN.Interfaces.Services
 {
     public interface IUserService

@@ -372,3 +372,4 @@ Properties/PublishProfiles/
 Properties/
 *.user
 .idea/
+ProjectMGN/appsettings.json

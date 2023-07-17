@@ -26,7 +26,7 @@ namespace ProjectMGN.Controllers
 
         [AllowAnonymous]
         //[Authorize]
-        [HttpPost("createuser")]
+        [HttpPost("registerUser")]
         public IActionResult RegisterUser(User user)
         {
             try
@@ -45,20 +45,16 @@ namespace ProjectMGN.Controllers
         {
             try
             {
-                LoginResponse user =  _userService.LoginService(loginRequest);
+                LoginResponse user = _userService.LoginService(loginRequest);
+                LoginResponse data = user;
 
-                return Ok(user);
+                return Ok(new {data});
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                String message = ex.Message;
+                return BadRequest(new {message});
             }
-        }
-        [HttpGet("test")]
-        [Authorize]
-        public IActionResult Test()
-        {
-            return Ok("Test");
         }
     }
 }

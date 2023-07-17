@@ -11,6 +11,7 @@ namespace ProjectMGN.Db
         }
 
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Projects> Projects { get; set; } = null!;
 
 
         public void TestConnection()
