@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectMGN.Attributes;
 using ProjectMGN.Db;
 using ProjectMGN.DTOS.Request;
 using ProjectMGN.DTOS.Response;
@@ -46,10 +47,12 @@ namespace ProjectMGN.Controllers
         }
         [Authorize]
         [HttpGet("{ownerId}")]
+        [ValidateUserId]
         public IActionResult GetAllProjects(int OwnerId)
         {
             try
             {
+                //string token = httpContext.Request.Headers.Authorization;
                 List<Projects> data = _projectsService.GetAllProjects(OwnerId);
                 return Ok(new { data });
             }
@@ -59,8 +62,6 @@ namespace ProjectMGN.Controllers
                 return BadRequest(new { message });
             }
         }
-
-
 
     }
 }
