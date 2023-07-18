@@ -38,9 +38,13 @@ builder.Services.AddDbContext<ProjectMGNDB>(options =>
     options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
 });
 
-builder.Services.AddScoped<IToken, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
+
+builder.Services.AddScoped<IToken, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProjectsService, ProjectsService>();
+
 
 
 

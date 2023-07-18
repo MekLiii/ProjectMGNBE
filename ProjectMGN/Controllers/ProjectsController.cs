@@ -16,13 +16,51 @@ namespace ProjectMGN.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IProjectsService _projectsService;
 
-        public ProjectsController(IUserService userService)
+        public ProjectsController(IProjectsService projectsService)
         {
-            _userService = userService;
+            _projectsService = projectsService;
 
         }
-       
+        [Authorize]
+        [HttpPost("addProject/{ownerId}")]
+        public IActionResult CreateProject(AddProjectRequest project, int OwnerId)
+        {
+            try
+            {
+                Projects projects = new Projects()
+                {
+                    ConfigurationId = null,
+                    Name = project.ProjectName,
+                    OwnerId = OwnerId,
+                };
+                _projectsService.CreateProject(projects, OwnerId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                return BadRequest(new { message });
+            }
+        }
+        [Authorize]
+        [HttpGet("{ownerId}")]
+        public IActionResult GetAllProjects(int OwnerId)
+        {
+            try
+            {
+                List<Projects> data = _projectsService.GetAllProjects(OwnerId);
+                return Ok(new { data });
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                return BadRequest(new { message });
+            }
+        }
+
+
+
     }
 }

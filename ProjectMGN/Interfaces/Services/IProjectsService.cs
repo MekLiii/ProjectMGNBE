@@ -1,6 +1,10 @@
-﻿namespace ProjectMGN.Interfaces.Services
+﻿using ProjectMGN.Models;
+
+namespace ProjectMGN.Interfaces.Services
 {
-    public class IProjectsService
+    public interface IProjectsService
     {
+        public void CreateProject(Projects projects,int OwnerId);
+        public List<Projects> GetAllProjects(int OwnerId);
     }
 }
