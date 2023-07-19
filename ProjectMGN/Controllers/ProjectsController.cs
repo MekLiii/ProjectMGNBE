@@ -34,6 +34,7 @@ namespace ProjectMGN.Controllers
                 {
                     ConfigurationId = null,
                     Name = project.ProjectName,
+                    Image = project.Image,
                     OwnerId = OwnerId,
                 };
                 _projectsService.CreateProject(projects, OwnerId);
@@ -52,7 +53,6 @@ namespace ProjectMGN.Controllers
         {
             try
             {
-                //string token = httpContext.Request.Headers.Authorization;
                 List<Projects> data = _projectsService.GetAllProjects(OwnerId);
                 return Ok(new { data });
             }

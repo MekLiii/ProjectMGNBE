@@ -12,23 +12,5 @@ namespace ProjectMGN.Db
 
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Projects> Projects { get; set; } = null!;
-
-
-        public void TestConnection()
-        {
-            try
-            {
-                using (var connection = Database.GetDbConnection())
-                {
-                    connection.Open();
-                    Console.WriteLine("Succes");
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
     }
 }
