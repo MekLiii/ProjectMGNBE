@@ -12,20 +12,17 @@ namespace ProjectMGN.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        //private readonly IMapper _mapper;
         private readonly IToken _tokenService;
 
         public UserService(IUserRepository userRepository, IToken tokenService)
         {
             _userRepository = userRepository;
-            //_mapper = mapper;
             _tokenService = tokenService;
 
         }
 
         public void RegisterUser(User request)
         {
-            //var user = _mapper.Map<User>(request);
             _userRepository.RegisterUser(request);
         }
         public LoginResponse LoginService(LoginRequest request)

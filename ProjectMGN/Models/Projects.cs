@@ -9,6 +9,6 @@ namespace ProjectMGN.Models
         public int OwnerId { get; set; } = 0;
         public int? ConfigurationId { get; set; } = 0;
 
-        public string? Image { get; set; } = String.Empty;
+        public string? Image { get; set; }
     }
 }
