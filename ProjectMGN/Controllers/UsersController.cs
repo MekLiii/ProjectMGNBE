@@ -17,15 +17,14 @@ namespace ProjectMGN.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-      
+
         public UsersController(IUserService userService)
         {
             _userService = userService;
-            
+
         }
 
         [AllowAnonymous]
-        //[Authorize]
         [HttpPost("registerUser")]
         public IActionResult RegisterUser(User user)
         {
@@ -48,12 +47,12 @@ namespace ProjectMGN.Controllers
                 LoginResponse user = _userService.LoginService(loginRequest);
                 LoginResponse data = user;
 
-                return Ok(new {data});
+                return Ok(new { data });
             }
             catch (Exception ex)
             {
                 String message = ex.Message;
-                return BadRequest(new {message});
+                return BadRequest(new { message });
             }
         }
     }
