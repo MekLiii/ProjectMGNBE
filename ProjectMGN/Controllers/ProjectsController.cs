@@ -36,6 +36,7 @@ namespace ProjectMGN.Controllers
                     Name = project.ProjectName,
                     Image = project.Image,
                     OwnerId = OwnerId,
+                    Guid = Guid.NewGuid().ToString()
                 };
                 _projectsService.CreateProject(projects, OwnerId);
                 return NoContent();
