@@ -55,5 +55,19 @@ namespace ProjectMGN.Controllers
                 return BadRequest(new { message });
             }
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult GetAll()
+        {
+            try
+            {
+
+                return Ok("test");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

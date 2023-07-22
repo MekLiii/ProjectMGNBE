@@ -14,12 +14,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("LocalhostPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+    });
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
 {
-Console.WriteLine(builder.Configuration["Jwt:Key"]);
     o.TokenValidationParameters = new TokenValidationParameters
     {
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
@@ -36,6 +42,7 @@ Console.WriteLine(builder.Configuration["Jwt:Key"]);
 builder.Services.AddDbContext<ProjectMGNDB>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
+
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -49,6 +56,7 @@ builder.Services.AddScoped<IProjectsService, ProjectsService>();
 
 
 var app = builder.Build();
+app.UseCors("LocalhostPolicy");
 app.UseMiddleware<JwtMiddleware>();
 
 // Configure the HTTP request pipeline.

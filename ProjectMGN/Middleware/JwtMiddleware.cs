@@ -1,4 +1,6 @@
-﻿using ProjectMGN.Interfaces.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using ProjectMGN.Interfaces.Services;
 
 namespace ProjectMGN.Middleware
 {
@@ -27,7 +29,10 @@ namespace ProjectMGN.Middleware
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                //make a response with status code 400
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = ex.Message }));
             }
         }
     }

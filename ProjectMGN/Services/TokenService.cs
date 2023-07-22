@@ -47,7 +47,6 @@ namespace ProjectMGN.Services
         }
         public int? ValidateToken(string token)
         {
-            Console.WriteLine("prefix" + token + "token");
             if (token == null) return null;
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
@@ -62,9 +61,7 @@ namespace ProjectMGN.Services
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                Console.WriteLine("prefix" + jwtToken + "test");    
                 int userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
-
 
                 return userId;
             }

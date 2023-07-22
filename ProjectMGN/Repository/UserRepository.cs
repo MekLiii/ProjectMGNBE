@@ -19,13 +19,21 @@ namespace ProjectMGN.Repository
         }
         private bool CheckIfUserAlreadyExists(User user)
         {
-            if (user == null)
+            try
+            {
+                if (user == null)
+                {
+                    return false;
+                }
+                User existingUser = _dbContext.Users.FirstOrDefault(userFromDb => userFromDb.UserName == user.UserName || userFromDb.Email == user.Email);
+                bool userExists = (existingUser != null);
+                return userExists;
+                return false;
+            }
+            catch
             {
                 return false;
             }
-            User existingUser = _dbContext.Users.FirstOrDefault(userFromDb => userFromDb.UserName == user.UserName || userFromDb.Email == user.Email);
-            bool userExists = (existingUser != null);
-            return userExists;
         }
         public void RegisterUser(User user)
         {
@@ -39,7 +47,7 @@ namespace ProjectMGN.Repository
         }
         public User Login(LoginRequest request)
         {
-            User user = _dbContext.Users.FirstOrDefault(user => user.UserName == request.UserName);
+            User user = _dbContext.Users.FirstOrDefault(user => user.Email == request.Email);
             if (user == null)
             {
                 throw new InvalidOperationException("User does not exist");

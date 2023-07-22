@@ -373,3 +373,4 @@ Properties/
 *.user
 .idea/
 ProjectMGN/appsettings.json
+ProjectMGN/bin/Debug/net6.0/appsettings.json
