@@ -31,7 +31,7 @@ namespace ProjectMGN.Attributes
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            string message = "Something went wrong... UPS";
+            string message = "Invalid user id";
             try
             {
                 string token = context.HttpContext.Request.Headers.Authorization.ToString().Split(" ").Last();

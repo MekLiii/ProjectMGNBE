@@ -63,6 +63,22 @@ namespace ProjectMGN.Controllers
                 return BadRequest(new { message });
             }
         }
+        [HttpDelete("{ownerId}/{projectId}")]
+        [ValidateUserId]
+        [Authorize]
+        public IActionResult DeleteProject(int OwnerId, int ProjectId)
+        {
+            try
+            {
+                _projectsService.DeleteProject(OwnerId, ProjectId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                return BadRequest(new { message });
+            }
+        }
 
     }
 }

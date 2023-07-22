@@ -21,5 +21,10 @@ namespace ProjectMGN.Services
         {
             return _projectsRepository.GetAllProjects(OwnerId);
         }
+        public void DeleteProject(int OwnerId,int ProjectId)
+        {
+            _projectsRepository.DeleteProject(OwnerId, ProjectId);
+            return;
+        }
     }
 }
