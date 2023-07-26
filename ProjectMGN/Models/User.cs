@@ -8,9 +8,9 @@ namespace ProjectMGN.Models
         public int Id { get; set; } = 0;
         [EmailAddress]
         public string Email { get; set; } = String.Empty;
-        [Required]
+
         public string Password { get; set; } = String.Empty;
-        [Required]
+
         public string UserName { get; set; } = String.Empty;
 
 

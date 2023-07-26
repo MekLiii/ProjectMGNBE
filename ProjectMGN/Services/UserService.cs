@@ -27,6 +27,14 @@ namespace ProjectMGN.Services
         }
         public LoginResponse LoginService(LoginRequest request)
         {
+            if(request.Email == null)
+            {
+                throw new Exception("Email is empty");
+            }
+            if(request.Password == null)
+            {
+                throw new Exception("Password is empty");
+            }
             User user = _userRepository.Login(request);
             string token = _tokenService.GenerateToken(user);
 
