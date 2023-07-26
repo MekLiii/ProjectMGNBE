@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using System.Net;
 using System.Text.Json;
 
 namespace ProjectMGN.Middleware
@@ -20,16 +21,19 @@ namespace ProjectMGN.Middleware
             }
             catch (Exception ex)
             {
-
+                await HandleExceptionAsync(context, ex);
             }
         }
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            string message = JsonSerializer.Serialize(exception.Message);
 
-            await context.Response.WriteAsync(message);
+            string message = exception.Message;
+            var responseObj = new { message };
+
+            string jsonResponse = JsonSerializer.Serialize(responseObj);
+            await context.Response.WriteAsync(jsonResponse);
         }
     }
 }
