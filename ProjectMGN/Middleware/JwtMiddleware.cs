@@ -22,7 +22,6 @@ namespace ProjectMGN.Middleware
                 if (userId != null)
                 {
                     context.Items["User"] = userService.GetUserById(userId.Value);
-                    Console.WriteLine(context.Items["User"] + "test");
                 }
                 await _next(context);
             }

@@ -19,7 +19,6 @@ namespace ProjectMGN.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            Console.WriteLine("ExceptionMiddleware");
             try
             {
 

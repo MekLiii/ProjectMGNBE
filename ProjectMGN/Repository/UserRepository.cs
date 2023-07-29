@@ -1,6 +1,7 @@
 ﻿using ProjectMGN.Db;
 using ProjectMGN.DTOS.Request;
 using ProjectMGN.Interfaces.Repositories;
+using ProjectMGN.Interfaces.Services;
 using ProjectMGN.Models;
 
 namespace ProjectMGN.Repository
@@ -8,10 +9,12 @@ namespace ProjectMGN.Repository
     public class UserRepository : IUserRepository
     {
         private readonly ProjectMGNDB _dbContext;
+        private readonly ISypherService _sypherService;
 
-        public UserRepository(ProjectMGNDB dbContext)
+        public UserRepository(ProjectMGNDB dbContext,ISypherService sypherService)
         {
             _dbContext = dbContext;
+            _sypherService = sypherService;
         }
         private bool CheckIfUserAlreadyExists(User user)
         {
@@ -32,10 +35,19 @@ namespace ProjectMGN.Repository
         }
         public void RegisterUser(User user)
         {
-            if (user.UserName == null || user.Password == null || user.Email == null)
+            if (user.UserName == null)
             {
-                throw new ArgumentException("Data is not valid");
+                throw new ArgumentException("User name is not valid");
             }
+            if(user.Email == null)
+            {
+                throw new ArgumentException("Email is not valid");
+            }
+            if(user.Password == null)
+            {
+                throw new ArgumentException("Password is not valid");
+            }
+
             if (CheckIfUserAlreadyExists(user))
             {
                 throw new InvalidOperationException("User already exists");
@@ -47,11 +59,16 @@ namespace ProjectMGN.Repository
         public User Login(LoginRequest request)
         {
             User user = _dbContext.Users.FirstOrDefault(user => user.Email == request.Email);
+            //Console.WriteLine(request.Password);
+            //Console.WriteLine(user.Password);
+            //Console.WriteLine(_sypherService.Decrypt(user.Password));
             if (user == null)
             {
                 throw new Exception("User does not exist");
             }
-            if (user.Password != request.Password)
+            string encryptedPassword = _sypherService.Decrypt(user.Password);
+
+            if (encryptedPassword != request.Password)
             {
                 throw new InvalidOperationException("Password is incorrect");
             }

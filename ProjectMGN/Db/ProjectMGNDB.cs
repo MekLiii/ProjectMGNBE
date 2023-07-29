@@ -7,7 +7,7 @@ namespace ProjectMGN.Db
     {
         public ProjectMGNDB(DbContextOptions<ProjectMGNDB> options) : base(options)
         {
-            Console.WriteLine(options);
+
         }
 
         public DbSet<User> Users { get; set; } = null!;
