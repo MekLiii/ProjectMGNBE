@@ -28,8 +28,16 @@ namespace ProjectMGN.Controllers
         [HttpPost("addProject/{ownerId}")]
         public IActionResult CreateProject(AddProjectRequest project, int OwnerId)
         {
-           
-            _projectsService.CreateProject(project, OwnerId);
+            Project _project = new()
+            {
+                ConfigurationId = null,
+                Name = project.ProjectName,
+                Image = project.Image,
+                OwnerId = OwnerId,
+                Guid = Guid.NewGuid().ToString()
+            };
+
+            _projectsService.CreateProject(_project, OwnerId);
             return NoContent();
         }
         [Authorize]
