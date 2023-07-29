@@ -13,10 +13,6 @@ namespace ProjectMGN.Repository
         {
             _dbContext = dbContext;
         }
-        private bool ChechIfEmailIsValid(User user)
-        {
-            return true;
-        }
         private bool CheckIfUserAlreadyExists(User user)
         {
             try
@@ -28,7 +24,6 @@ namespace ProjectMGN.Repository
                 User existingUser = _dbContext.Users.FirstOrDefault(userFromDb => userFromDb.UserName == user.UserName || userFromDb.Email == user.Email);
                 bool userExists = (existingUser != null);
                 return userExists;
-                return false;
             }
             catch
             {
@@ -37,6 +32,10 @@ namespace ProjectMGN.Repository
         }
         public void RegisterUser(User user)
         {
+            if (user.UserName == null || user.Password == null || user.Email == null)
+            {
+                throw new ArgumentException("Data is not valid");
+            }
             if (CheckIfUserAlreadyExists(user))
             {
                 throw new InvalidOperationException("User already exists");

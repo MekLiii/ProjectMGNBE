@@ -57,6 +57,7 @@ builder.Services.AddScoped<IProjectsService, ProjectsService>();
 
 var app = builder.Build();
 app.UseCors("LocalhostPolicy");
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<JwtMiddleware>();
 
 // Configure the HTTP request pipeline.

@@ -2,7 +2,7 @@
 
 namespace ProjectMGN.Models
 {
-    public class Projects
+    public class Project
     {
         public int Id { get; set; } = 0;
         public string Guid { get; set; } = String.Empty;

@@ -28,56 +28,25 @@ namespace ProjectMGN.Controllers
         [HttpPost("addProject/{ownerId}")]
         public IActionResult CreateProject(AddProjectRequest project, int OwnerId)
         {
-            try
-            {
-                Projects projects = new Projects()
-                {
-                    ConfigurationId = null,
-                    Name = project.ProjectName,
-                    Image = project.Image,
-                    OwnerId = OwnerId,
-                    Guid = Guid.NewGuid().ToString()
-                };
-                _projectsService.CreateProject(projects, OwnerId);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                return BadRequest(new { message });
-            }
+           
+            _projectsService.CreateProject(project, OwnerId);
+            return NoContent();
         }
         [Authorize]
         [HttpGet("{ownerId}")]
         [ValidateUserId]
         public IActionResult GetAllProjects(int OwnerId)
         {
-            try
-            {
-                List<Projects> data = _projectsService.GetAllProjects(OwnerId);
-                return Ok(new { data });
-            }
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                return BadRequest(new { message });
-            }
+            List<Project> data = _projectsService.GetAllProjects(OwnerId);
+            return Ok(new { data });
         }
         [HttpDelete("{ownerId}/{projectId}")]
         [ValidateUserId]
         [Authorize]
         public IActionResult DeleteProject(int OwnerId, int ProjectId)
         {
-            try
-            {
-                _projectsService.DeleteProject(OwnerId, ProjectId);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                return BadRequest(new { message });
-            }
+            _projectsService.DeleteProject(OwnerId, ProjectId);
+            return NoContent();
         }
 
     }

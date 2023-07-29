@@ -28,46 +28,19 @@ namespace ProjectMGN.Controllers
         [HttpPost("registerUser")]
         public IActionResult RegisterUser(User user)
         {
-            try
-            {
-                _userService.RegisterUser(user);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _userService.RegisterUser(user);
+            return NoContent();
         }
         [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult Login(LoginRequest loginRequest)
         {
-            try
-            {
-                LoginResponse user = _userService.LoginService(loginRequest);
-                LoginResponse data = user;
+            LoginResponse user = _userService.LoginService(loginRequest);
+            LoginResponse data = user;
 
-                return Ok(new { data });
-            }
-            catch (Exception ex)
-            {
-                String message = ex.Message;
-                return BadRequest(new { message });
-            }
+            return Ok(new { data });
         }
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult GetAll()
-        {
-            try
-            {
 
-                return Ok("test");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+
     }
 }

@@ -12,12 +12,20 @@ namespace ProjectMGN.Services
             _projectsRepository = projectsRepository;
         }
         
-        public void CreateProject(Projects projects, int OwnerId)
+        public void CreateProject(Project project, int OwnerId)
         {
-            _projectsRepository.CreateProject(projects, OwnerId);
+            Project _project = new()
+            {
+                ConfigurationId = null,
+                Name = project.Name,
+                Image = project.Image,
+                OwnerId = OwnerId,
+                Guid = Guid.NewGuid().ToString()
+            };
+            _projectsRepository.CreateProject(_project, OwnerId);
             return;
         }
-        public List<Projects> GetAllProjects(int OwnerId)
+        public List<Project> GetAllProjects(int OwnerId)
         {
             return _projectsRepository.GetAllProjects(OwnerId);
         }
