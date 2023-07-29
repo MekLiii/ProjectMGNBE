@@ -38,6 +38,7 @@ namespace ProjectMGN.Middleware
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 await context.Response.WriteAsync(result);
             }
+           
 
         }
         

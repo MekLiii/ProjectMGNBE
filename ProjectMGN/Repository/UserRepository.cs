@@ -49,7 +49,7 @@ namespace ProjectMGN.Repository
             User user = _dbContext.Users.FirstOrDefault(user => user.Email == request.Email);
             if (user == null)
             {
-                throw new InvalidOperationException("User does not exist");
+                throw new Exception("User does not exist");
             }
             if (user.Password != request.Password)
             {
