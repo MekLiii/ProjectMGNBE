@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using ProjectMGN.Interfaces.Services;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjectMGN.Middleware
 {
@@ -12,26 +15,35 @@ namespace ProjectMGN.Middleware
         {
             _next = next;
         }
+
         public async Task Invoke(HttpContext context, IUserService userService, IToken token)
         {
-            try
+            if (!context.Request.Path.StartsWithSegments("/api/registerUser"))
             {
-              
-                var JWTtoken = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-                var userId = token.ValidateToken(JWTtoken);
-                if (userId != null)
+                var authorizationHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
                 {
-                    context.Items["User"] = userService.GetUserById(userId.Value);
+                    try
+                    {
+                        var JWTtoken = authorizationHeader.Substring("Bearer ".Length);
+                        var userId = token.ValidateToken(JWTtoken);
+                        if (userId != null)
+                        {
+                            context.Items["User"] = userService.GetUserById(userId.Value);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle token validation errors
+                        context.Response.ContentType = "application/json";
+                        context.Response.StatusCode = 400;
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = ex.Message }));
+                        return;
+                    }
                 }
-                await _next(context);
             }
-            catch (Exception ex)
-            {
-                //make a response with status code 400
-                context.Response.ContentType = "application/json";
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = ex.Message }));
-            }
+
+            await _next(context);
         }
     }
 }

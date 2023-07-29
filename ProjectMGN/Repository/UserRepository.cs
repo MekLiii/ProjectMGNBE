@@ -59,9 +59,6 @@ namespace ProjectMGN.Repository
         public User Login(LoginRequest request)
         {
             User user = _dbContext.Users.FirstOrDefault(user => user.Email == request.Email);
-            //Console.WriteLine(request.Password);
-            //Console.WriteLine(user.Password);
-            //Console.WriteLine(_sypherService.Decrypt(user.Password));
             if (user == null)
             {
                 throw new Exception("User does not exist");
