@@ -34,5 +34,9 @@ namespace ProjectMGN.Services
             _projectsRepository.DeleteProject(OwnerId, ProjectId);
             return;
         }
+        public Project GetProjectById(int OwnerId,int ProjectId)
+        {
+            return _projectsRepository.GetProjectById(OwnerId, ProjectId);
+        }
     }
 }

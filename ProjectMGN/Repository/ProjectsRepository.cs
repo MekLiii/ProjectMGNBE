@@ -37,5 +37,14 @@ namespace ProjectMGN.Repository
             }
             _dbContext.Projects.Remove(projectToDelete);
         }
+        public Project GetProjectById(int ownerId, int projectId)
+        {
+            Project project = _dbContext.Projects.FirstOrDefault(project => project.Id == projectId);
+            if (project == null)
+            {
+                throw new InvalidCastException("Project not found");
+            }
+            return project;
+        }
     }
 }
