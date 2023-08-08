@@ -15,31 +15,32 @@ namespace ProjectMGN.Repository
 
         public List<Configuration> GetAllConfigurations(int OwnerId)
         {
-            List<Configuration> configurations = _dbContext.Configurations.Where(config => config.OwnerId == OwnerId).ToList();
+            List<Configuration> configurations = _dbContext.Configuration.Where(config => config.OwnerId == OwnerId).ToList();
+            Console.WriteLine(configurations);
             return configurations;
         }
         public void CreateConfiguration(Configuration configuration, int OwnerId)
         {
-            Configuration isConfigurationExists = _dbContext.Configurations.FirstOrDefault(configurationFromDb => configurationFromDb.OwnerId == OwnerId && configurationFromDb.Name == configuration.Name);
+            Configuration isConfigurationExists = _dbContext.Configuration.FirstOrDefault(configurationFromDb => configurationFromDb.OwnerId == OwnerId && configurationFromDb.Name == configuration.Name);
             if (isConfigurationExists != null)
             {
                 throw new InvalidOperationException("Configuration already exists");
             }
-            _dbContext.Configurations.Add(configuration);
+            _dbContext.Configuration.Add(configuration);
             _dbContext.SaveChanges();
         }
         public void DeleteConfiguration(int ownerId, int configurationId)
         {
-            Configuration configurationToDelete = _dbContext.Configurations.FirstOrDefault(configuration => configuration.Id == configurationId);
+            Configuration configurationToDelete = _dbContext.Configuration.FirstOrDefault(configuration => configuration.Id == configurationId);
             if (configurationToDelete == null)
             {
                 throw new InvalidCastException("Configuration not found");
             }
-            _dbContext.Configurations.Remove(configurationToDelete);
+            _dbContext.Configuration.Remove(configurationToDelete);
         }
         public Configuration GetConfigurationById(int ownerId, int configurationId)
         {
-            Configuration configuration = _dbContext.Configurations.FirstOrDefault(configuration => configuration.Id == configurationId);
+            Configuration configuration = _dbContext.Configuration.FirstOrDefault(configuration => configuration.Id == configurationId);
             if (configuration == null)
             {
                 throw new InvalidCastException("Configuration not found");

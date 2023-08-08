@@ -12,6 +12,6 @@ namespace ProjectMGN.Db
 
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Project> Projects { get; set; } = null!;
-        public DbSet<Configuration> Configurations { get; set; } = null!;
+        public DbSet<Configuration> Configuration { get; set; } = null!;
     }
 }
