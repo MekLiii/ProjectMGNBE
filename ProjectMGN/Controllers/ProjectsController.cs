@@ -25,6 +25,7 @@ namespace ProjectMGN.Controllers
 
         }
         [Authorize]
+        [ValidateUserId]
         [HttpPost("addProject/{ownerId}")]
         public IActionResult CreateProject(AddProjectRequest project, int OwnerId)
         {
@@ -55,6 +56,14 @@ namespace ProjectMGN.Controllers
         {
             _projectsService.DeleteProject(OwnerId, ProjectId);
             return NoContent();
+        }
+        [HttpGet("getProject/{ownerId}/{projectId}")]
+        [ValidateUserId]
+        [Authorize]
+        public IActionResult GetProject(int OwnerId, int ProjectId)
+        {
+            Project data = _projectsService.GetProjectById(OwnerId, ProjectId);
+            return Ok(new { data });
         }
 
     }
