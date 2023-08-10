@@ -50,21 +50,16 @@ namespace ProjectMGN.Repository
         }
         public List<ActionResponse> GetActions(int configurationId)
         {
-            List<Actions> actions = _dbContext.Actions.Where(action => action.ConfigurationId == configurationId).ToList();
-            List<ActionResponse> actionsResponse = new List<ActionResponse>();
-            foreach (var action in actions)
-            {
-                ActionResponse response = new ()
-                {
-                    ActionName = action.ActionName,
-                    command = "test",
-                    Id = action.Id,
-                };
-                actionsResponse.Add(response);
-            }
-            
-
-            return actionsResponse;
+            List<ActionResponse> actions = _dbContext.Actions.Where(action => action.ConfigurationId == configurationId)
+               .Select(action => new ActionResponse
+               {
+                   ActionName = action.ActionName,
+                   Command = "test", 
+                   Id = action.Id,
+               })
+                .ToList();
+            return actions;
         }
+
     }
 }
