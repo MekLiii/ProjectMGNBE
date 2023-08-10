@@ -4,6 +4,6 @@
     {
         public int? Id { get; set; }
         public string? ActionName { get; set; }
-        public string command { get; set; }
+        public string Command { get; set; }
     }
 }
