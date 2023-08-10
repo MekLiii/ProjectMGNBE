@@ -1,4 +1,5 @@
-﻿using ProjectMGN.Interfaces.Repositories;
+﻿using ProjectMGN.DTOS.Response;
+using ProjectMGN.Interfaces.Repositories;
 using ProjectMGN.Interfaces.Services;
 using ProjectMGN.Models;
 
@@ -18,9 +19,22 @@ namespace ProjectMGN.Services
         {
             _projectConfiguration.CreateConfiguration(configuration, OwnerId);
         }
-        public List<Configuration> GetAllConfigurations(int OwnerId)
+        public List<ConfigurationResponse> GetAllConfigurations(int OwnerId)
         {
-            return _projectConfiguration.GetAllConfigurations(OwnerId);
+            List<Configuration> configurations = _projectConfiguration.GetAllConfigurations(OwnerId);
+            List<ConfigurationResponse> configurationsWithActions = new List<ConfigurationResponse>() { };
+            foreach (Configuration configuration in configurations)
+            {
+                ConfigurationResponse configurationWithAction = new ConfigurationResponse()
+                {
+                    Id = configuration.Id,
+                    Name = configuration.Name,
+                    Actions = _projectConfiguration.GetActions((int)configuration.Id),
+                };
+                configurationsWithActions.Add(configurationWithAction);
+            }
+
+            return configurationsWithActions;
         }
         public void DeleteConfiguration(int ownerId, int configurationId)
         {
