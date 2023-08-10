@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectMGN.Attributes;
+using ProjectMGN.DTOS.Response;
 using ProjectMGN.Interfaces.Services;
 using ProjectMGN.Models;
 
@@ -31,7 +32,7 @@ namespace ProjectMGN.Controllers
         [ValidateUserId]
         public IActionResult GetAllConfigurations(int OwnerId)
         {
-            List<Configuration> data = _configurationService.GetAllConfigurations(OwnerId);
+            List<ConfigurationResponse> data = _configurationService.GetAllConfigurations(OwnerId);
             return Ok(new { data });
         }
         [Authorize]

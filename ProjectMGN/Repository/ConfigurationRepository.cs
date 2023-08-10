@@ -1,6 +1,7 @@
 ﻿using ProjectMGN.Db;
 using ProjectMGN.Models;
 using ProjectMGN.Interfaces.Repositories;
+using ProjectMGN.DTOS.Response;
 
 namespace ProjectMGN.Repository
 {
@@ -46,6 +47,24 @@ namespace ProjectMGN.Repository
                 throw new InvalidCastException("Configuration not found");
             }
             return configuration;
-        }   
+        }
+        public List<ActionResponse> GetActions(int configurationId)
+        {
+            List<Actions> actions = _dbContext.Actions.Where(action => action.ConfigurationId == configurationId).ToList();
+            List<ActionResponse> actionsResponse = new List<ActionResponse>();
+            foreach (var action in actions)
+            {
+                ActionResponse response = new ()
+                {
+                    ActionName = action.ActionName,
+                    command = "test",
+                    Id = action.Id,
+                };
+                actionsResponse.Add(response);
+            }
+            
+
+            return actionsResponse;
+        }
     }
 }

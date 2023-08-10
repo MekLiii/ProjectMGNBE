@@ -1,4 +1,5 @@
-﻿using ProjectMGN.Models;
+﻿using ProjectMGN.DTOS.Response;
+using ProjectMGN.Models;
 
 namespace ProjectMGN.Interfaces.Repositories
 {
@@ -8,5 +9,6 @@ namespace ProjectMGN.Interfaces.Repositories
         public List<Configuration> GetAllConfigurations(int OwnerId);
         public void DeleteConfiguration(int ownerId, int configurationId);
         public Configuration GetConfigurationById(int ownerId, int configurationId);
+        public List<ActionResponse> GetActions(int configurationId);
     }
 }
