@@ -22,6 +22,19 @@ namespace ProjectMGN.Repository
             return configurations;
         }
 
+        public Configuration GetConfigurationById(int ownerId, int configurationId)
+        {
+            Console.WriteLine($"ownerId{ownerId}, configId ${configurationId}");
+            Configuration configuration =
+                _dbContext.Configuration.FirstOrDefault(configuration => configuration.Id == configurationId);
+            if (configuration == null)
+            {
+                throw new ArgumentException("Configuration not found");
+            }
+
+            return configuration;
+        }
+
         public void CreateConfiguration(Configuration configuration, int OwnerId)
         {
             Configuration isConfigurationExists = _dbContext.Configuration.FirstOrDefault(configurationFromDb =>
@@ -45,27 +58,16 @@ namespace ProjectMGN.Repository
             }
 
             _dbContext.Configuration.Remove(configurationToDelete);
+            _dbContext.SaveChanges();
         }
 
-        public Configuration GetConfigurationById(int ownerId, int configurationId)
-        {
-            Console.WriteLine($"ownerId{ownerId}, configId ${configurationId}");
-            Configuration configuration =
-                _dbContext.Configuration.FirstOrDefault(configuration => configuration.Id == configurationId);
-            if (configuration == null)
-            {
-                throw new ArgumentException("Configuration not found");
-            }
-
-            return configuration;
-        }
 
         public List<ActionResponse> GetActions(int configurationId)
         {
             List<ActionResponse> actions = _dbContext.Actions
                 .Where(action => action.ConfigurationId == configurationId)
                 .Join(
-                    _dbContext.Comands, 
+                    _dbContext.Comands,
                     action => action.commandId,
                     command => command.Id,
                     (action, command) => new ActionResponse
