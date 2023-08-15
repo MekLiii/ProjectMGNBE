@@ -36,7 +36,7 @@ namespace ProjectMGN.Controllers
             return Ok(new { data });
         }
         [Authorize]
-        [HttpDelete("delteConfiguration/${ownerId}/${configurationId}")]
+        [HttpDelete("delteConfiguration/{ownerId}/{configurationId}")]
         [ValidateUserId]
         public IActionResult DeleteConfiguration(int ownerId, int configurationId)
         {
@@ -44,7 +44,7 @@ namespace ProjectMGN.Controllers
             return NoContent();
         }
         [Authorize]
-        [HttpGet("/configuration/${ownerId}/${configurationId}")]
+        [HttpGet("getConfiguration/{ownerId}/{configurationId}")]
         [ValidateUserId]
         public IActionResult GetConfigurationById(int ownerId, int configurationId)
         {

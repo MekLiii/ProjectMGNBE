@@ -18,6 +18,15 @@ namespace ProjectMGN.Repository
             List<Project> projects = _dbContext.Projects.Where(proj => proj.OwnerId == OwnerId).ToList();
             return projects;
         }
+        public Project GetProjectById(int ownerId, int projectId)
+        {
+            Project project = _dbContext.Projects.FirstOrDefault(project => project.Id == projectId);
+            if (project == null)
+            {
+                throw new InvalidCastException("Project not found");
+            }
+            return project;
+        }
         public void CreateProject(Project project, int OwnerId)
         {
             Project isProjectExists = _dbContext.Projects.FirstOrDefault(projectFromDb => projectFromDb.OwnerId == OwnerId && projectFromDb.Name == project.Name);
@@ -37,14 +46,6 @@ namespace ProjectMGN.Repository
             }
             _dbContext.Projects.Remove(projectToDelete);
         }
-        public Project GetProjectById(int ownerId, int projectId)
-        {
-            Project project = _dbContext.Projects.FirstOrDefault(project => project.Id == projectId);
-            if (project == null)
-            {
-                throw new InvalidCastException("Project not found");
-            }
-            return project;
-        }
+        
     }
 }

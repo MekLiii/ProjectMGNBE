@@ -36,14 +36,16 @@ namespace ProjectMGN.Services
 
             return configurationsWithActions;
         }
+        public Configuration GetConfigurationById(int ownerId, int configurationId)
+        {
+            
+            return _projectConfiguration.GetConfigurationById(ownerId, configurationId);
+        }
         public void DeleteConfiguration(int ownerId, int configurationId)
         {
             _projectConfiguration.DeleteConfiguration(ownerId, configurationId);
         }
-        public Configuration GetConfigurationById(int ownerId, int configurationId)
-        {
-            return GetConfigurationById(ownerId, configurationId);
-        }
+        
 
     }
 }

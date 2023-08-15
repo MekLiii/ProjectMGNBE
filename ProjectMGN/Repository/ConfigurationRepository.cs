@@ -28,7 +28,7 @@ namespace ProjectMGN.Repository
                 configurationFromDb.OwnerId == OwnerId && configurationFromDb.Name == configuration.Name);
             if (isConfigurationExists != null)
             {
-                throw new InvalidOperationException("Configuration already exists");
+                throw new ArgumentException("Configuration already exists");
             }
 
             _dbContext.Configuration.Add(configuration);
@@ -41,7 +41,7 @@ namespace ProjectMGN.Repository
                 _dbContext.Configuration.FirstOrDefault(configuration => configuration.Id == configurationId);
             if (configurationToDelete == null)
             {
-                throw new InvalidCastException("Configuration not found");
+                throw new ArgumentException("Configuration not found");
             }
 
             _dbContext.Configuration.Remove(configurationToDelete);
@@ -49,11 +49,12 @@ namespace ProjectMGN.Repository
 
         public Configuration GetConfigurationById(int ownerId, int configurationId)
         {
+            Console.WriteLine($"ownerId{ownerId}, configId ${configurationId}");
             Configuration configuration =
                 _dbContext.Configuration.FirstOrDefault(configuration => configuration.Id == configurationId);
             if (configuration == null)
             {
-                throw new InvalidCastException("Configuration not found");
+                throw new ArgumentException("Configuration not found");
             }
 
             return configuration;
