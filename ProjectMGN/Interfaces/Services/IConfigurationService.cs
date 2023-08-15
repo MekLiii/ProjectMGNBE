@@ -8,7 +8,7 @@ namespace ProjectMGN.Interfaces.Services
         public void CreateConfiguration(Configuration configuration, int OwnerId);
         public List<ConfigurationResponse> GetAllConfigurations(int OwnerId);
         public void DeleteConfiguration(int ownerId, int configurationId);
-        public Configuration GetConfigurationById(int ownerId, int configurationId);
+        public ConfigurationResponse GetConfigurationById(int ownerId, int configurationId);
 
     }
 }

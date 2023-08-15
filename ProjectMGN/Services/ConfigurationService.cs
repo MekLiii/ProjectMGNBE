@@ -11,7 +11,6 @@ namespace ProjectMGN.Services
 
         public ConfigurationService(IProjectConfiguration projectConfiguration)
         {
-
             _projectConfiguration = projectConfiguration;
         }
 
@@ -19,10 +18,11 @@ namespace ProjectMGN.Services
         {
             _projectConfiguration.CreateConfiguration(configuration, OwnerId);
         }
+
         public List<ConfigurationResponse> GetAllConfigurations(int OwnerId)
         {
             List<Configuration> configurations = _projectConfiguration.GetAllConfigurations(OwnerId);
-            List<ConfigurationResponse> configurationsWithActions = new List<ConfigurationResponse>() { };
+            List<ConfigurationResponse> configurationsWithActions = new List<ConfigurationResponse>();
             foreach (Configuration configuration in configurations)
             {
                 ConfigurationResponse configurationWithAction = new ConfigurationResponse()
@@ -36,16 +36,23 @@ namespace ProjectMGN.Services
 
             return configurationsWithActions;
         }
-        public Configuration GetConfigurationById(int ownerId, int configurationId)
+
+        public ConfigurationResponse GetConfigurationById(int ownerId, int configurationId)
         {
-            
-            return _projectConfiguration.GetConfigurationById(ownerId, configurationId);
+            Configuration configuration = _projectConfiguration.GetConfigurationById(ownerId, configurationId);
+            ConfigurationResponse configurationWithActions = new ConfigurationResponse()
+            {
+                Id = configuration.Id,
+                Actions = _projectConfiguration.GetActions((int)configuration.Id),
+                Name = configuration.Name
+            };
+
+            return configurationWithActions;
         }
+
         public void DeleteConfiguration(int ownerId, int configurationId)
         {
             _projectConfiguration.DeleteConfiguration(ownerId, configurationId);
         }
-        
-
     }
 }
