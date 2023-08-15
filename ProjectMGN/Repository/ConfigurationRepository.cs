@@ -59,6 +59,11 @@ namespace ProjectMGN.Repository
                 throw new ArgumentException("Configuration does not exist");
             }
 
+            if (updatedConfigurationRequest.Name == null || updatedConfigurationRequest.Name.Length < 3)
+            {
+                throw new ArgumentException("Invalid name");
+            }
+
             existingConfiguration.Name = updatedConfigurationRequest.Name;
             _dbContext.SaveChanges();
         }
