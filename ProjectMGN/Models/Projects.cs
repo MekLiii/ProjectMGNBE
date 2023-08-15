@@ -1,14 +1,12 @@
-﻿
-
-namespace ProjectMGN.Models
+﻿namespace ProjectMGN.Models
 {
     public class Project
     {
         public int Id { get; set; } = 0;
-        public string Guid { get; set; } = String.Empty;
-        public string Name { get; set; } = String.Empty;
-        public int OwnerId { get; set; } = 0;
-        public int? ConfigurationId { get; set; } = 0;
+        public string Guid { get; set; }
+        public string? Name { get; set; }
+        public int? OwnerId { get; set; }
+        public int? ConfigurationId { get; set; }
 
         public string? Image { get; set; }
     }

@@ -31,7 +31,7 @@ namespace ProjectMGN.Controllers
         {
             Project _project = new()
             {
-                ConfigurationId = null,
+                ConfigurationId = project.ConfigurationId,
                 Name = project.ProjectName,
                 Image = project.Image,
                 OwnerId = OwnerId,

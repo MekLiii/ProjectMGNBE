@@ -7,36 +7,42 @@ namespace ProjectMGN.Services
     public class ProjectsService : IProjectsService
     {
         private readonly IProjectsRepository _projectsRepository;
-        public ProjectsService(IProjectsRepository projectsRepository)
+        private readonly IProjectConfiguration _projectConfiguration;
+        public ProjectsService(IProjectsRepository projectsRepository,IProjectConfiguration projectConfiguration)
         {
             _projectsRepository = projectsRepository;
+            _projectConfiguration = projectConfiguration;
         }
         
-        public void CreateProject(Project project, int OwnerId)
+        public void CreateProject(Project project, int ownerId)
         {
-            Project _project = new()
+            if (project.ConfigurationId != null)
             {
-                ConfigurationId = null,
+                _projectConfiguration.GetConfigurationById(ownerId,(int)project.ConfigurationId);
+            }
+            
+            Project newProject = new()
+            {
+                ConfigurationId = project.ConfigurationId,
                 Name = project.Name,
                 Image = project.Image,
-                OwnerId = OwnerId,
+                OwnerId = ownerId,
                 Guid = Guid.NewGuid().ToString()
             };
-            _projectsRepository.CreateProject(_project, OwnerId);
-            return;
+            
+            _projectsRepository.CreateProject(newProject, ownerId);
         }
-        public List<Project> GetAllProjects(int OwnerId)
+        public List<Project> GetAllProjects(int ownerId)
         {
-            return _projectsRepository.GetAllProjects(OwnerId);
+            return _projectsRepository.GetAllProjects(ownerId);
         }
-        public void DeleteProject(int OwnerId,int ProjectId)
+        public void DeleteProject(int ownerId,int projectId)
         {
-            _projectsRepository.DeleteProject(OwnerId, ProjectId);
-            return;
+            _projectsRepository.DeleteProject(ownerId, projectId);
         }
-        public Project GetProjectById(int OwnerId,int ProjectId)
+        public Project GetProjectById(int ownerId,int projectId)
         {
-            return _projectsRepository.GetProjectById(OwnerId, ProjectId);
+            return _projectsRepository.GetProjectById(ownerId, projectId);
         }
     }
 }
