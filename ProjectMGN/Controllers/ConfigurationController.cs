@@ -20,19 +20,19 @@ namespace ProjectMGN.Controllers
             _configurationService = configuration;
         }
         [Authorize]
-        [HttpPost("createConfiguration/{OwnerId}")]
+        [HttpPost("createConfiguration/{ownerId}")]
         [ValidateUserId]
-        public IActionResult CreateConfiguration(Configuration configuration, int OwnerId)
+        public IActionResult CreateConfiguration(Configuration configuration, int ownerId)
         {
-            _configurationService.CreateConfiguration(configuration, OwnerId);
+            _configurationService.CreateConfiguration(configuration, ownerId);
             return NoContent();
         }
         [Authorize]
         [HttpGet("getConfigurations/{OwnerId}")]
         [ValidateUserId]
-        public IActionResult GetAllConfigurations(int OwnerId)
+        public IActionResult GetAllConfigurations(int ownerId)
         {
-            List<ConfigurationResponse> data = _configurationService.GetAllConfigurations(OwnerId);
+            var data = _configurationService.GetAllConfigurations(ownerId);
             return Ok(new { data });
         }
         [Authorize]
