@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectMGN.Attributes;
+using ProjectMGN.DTOS.Request;
 using ProjectMGN.DTOS.Response;
 using ProjectMGN.Interfaces.Services;
 using ProjectMGN.Models;
@@ -41,6 +42,14 @@ namespace ProjectMGN.Controllers
         public IActionResult DeleteConfiguration(int ownerId, int configurationId)
         {
             _configurationService.DeleteConfiguration(ownerId, configurationId);
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpPatch("updateConfiguration/{configurationId}")]
+        public IActionResult UpdateConfiguration(UpdateConfigurationRequest configurationRequestResponse,int configurationId)
+        {
+            _configurationService.UpdateConfiguration(configurationRequestResponse,configurationId);
             return NoContent();
         }
         [Authorize]

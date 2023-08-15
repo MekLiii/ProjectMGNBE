@@ -1,4 +1,5 @@
-﻿using ProjectMGN.DTOS.Response;
+﻿using ProjectMGN.DTOS.Request;
+using ProjectMGN.DTOS.Response;
 using ProjectMGN.Interfaces.Repositories;
 using ProjectMGN.Interfaces.Services;
 using ProjectMGN.Models;
@@ -48,6 +49,11 @@ namespace ProjectMGN.Services
             };
 
             return configurationWithActions;
+        }
+
+        public void UpdateConfiguration(UpdateConfigurationRequest configurationRequest,int configurationId)
+        {
+            _projectConfiguration.UpdateConfiguration(configurationRequest,configurationId);
         }
 
         public void DeleteConfiguration(int ownerId, int configurationId)

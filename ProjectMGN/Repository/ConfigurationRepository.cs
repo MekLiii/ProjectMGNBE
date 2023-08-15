@@ -1,4 +1,5 @@
 ﻿using ProjectMGN.Db;
+using ProjectMGN.DTOS.Request;
 using ProjectMGN.Models;
 using ProjectMGN.Interfaces.Repositories;
 using ProjectMGN.DTOS.Response;
@@ -37,7 +38,7 @@ namespace ProjectMGN.Repository
 
         public void CreateConfiguration(Configuration configuration, int OwnerId)
         {
-            Configuration isConfigurationExists = _dbContext.Configuration.FirstOrDefault(configurationFromDb =>
+            var isConfigurationExists = _dbContext.Configuration.FirstOrDefault(configurationFromDb =>
                 configurationFromDb.OwnerId == OwnerId && configurationFromDb.Name == configuration.Name);
             if (isConfigurationExists != null)
             {
@@ -48,9 +49,23 @@ namespace ProjectMGN.Repository
             _dbContext.SaveChanges();
         }
 
+        public void UpdateConfiguration(UpdateConfigurationRequest updatedConfigurationRequest,int configurationId)
+        {
+            var existingConfiguration = _dbContext.Configuration.FirstOrDefault(configurationFromDb =>
+                configurationFromDb.Id == configurationId);
+
+            if (existingConfiguration == null)
+            {
+                throw new ArgumentException("Configuration does not exist");
+            }
+
+            existingConfiguration.Name = updatedConfigurationRequest.Name;
+            _dbContext.SaveChanges();
+        }
+
         public void DeleteConfiguration(int ownerId, int configurationId)
         {
-            Configuration configurationToDelete =
+            var configurationToDelete =
                 _dbContext.Configuration.FirstOrDefault(configuration => configuration.Id == configurationId);
             if (configurationToDelete == null)
             {
