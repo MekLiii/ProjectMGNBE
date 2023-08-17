@@ -9,7 +9,7 @@ namespace ProjectMGN.Attributes
     public class ValidateUserIdAttribute : ActionFilterAttribute
     {
 
-        private int GetuserIdFromToken(string token)
+        private int GetUserIdFromToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
@@ -22,7 +22,8 @@ namespace ProjectMGN.Attributes
             {
                 throw new Exception("Something went wrong with token");
             }
-            int userId = Int32.Parse(userIdClaim.Value);
+            var userId = int.Parse(userIdClaim.Value);
+            var test = float.Parse("1.2");
 
             return userId;
         }
@@ -35,7 +36,7 @@ namespace ProjectMGN.Attributes
             try
             {
                 string token = context.HttpContext.Request.Headers.Authorization.ToString().Split(" ").Last();
-                int? userId = GetuserIdFromToken(token);
+                int? userId = GetUserIdFromToken(token);
 
                 if (context.ActionArguments["ownerId"] == null)
                 {

@@ -15,33 +15,50 @@ namespace ProjectMGN.Controllers
 
     {
         private readonly IConfigurationService _configurationService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ConfigurationController(IConfigurationService configuration)
+        public ConfigurationController(IConfigurationService configuration,IHttpContextAccessor httpContextAccessor)
         {
             _configurationService = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
         [Authorize]
-        [HttpPost("createConfiguration/{ownerId}")]
+        [HttpPost("createConfiguration")]
         [ValidateUserId]
-        public IActionResult CreateConfiguration(Configuration configuration, int ownerId)
+        public IActionResult CreateConfiguration(Configuration configuration)
         {
-            _configurationService.CreateConfiguration(configuration, ownerId);
+            var ownerId = _httpContextAccessor.HttpContext.Request.Headers["x-ownerId"];
+            if (ownerId.Count == 0)
+            {
+                throw new AggregateException("Invalid owner id");
+            }
+            _configurationService.CreateConfiguration(configuration, int.Parse(ownerId));
             return NoContent();
         }
         [Authorize]
-        [HttpGet("getConfigurations/{OwnerId}")]
+        [HttpGet("getConfigurations")]
         [ValidateUserId]
-        public IActionResult GetAllConfigurations(int ownerId)
+        public IActionResult GetAllConfigurations()
         {
-            var data = _configurationService.GetAllConfigurations(ownerId);
+            var ownerId = _httpContextAccessor.HttpContext.Request.Headers["x-ownerId"];
+            if (ownerId.Count == 0)
+            {
+                throw new AggregateException("Invalid owner id");
+            }
+            var data = _configurationService.GetAllConfigurations(int.Parse(ownerId));
             return Ok(new { data });
         }
         [Authorize]
-        [HttpDelete("delteConfiguration/{ownerId}/{configurationId}")]
+        [HttpDelete("delteConfiguration/{configurationId}")]
         [ValidateUserId]
-        public IActionResult DeleteConfiguration(int ownerId, int configurationId)
+        public IActionResult DeleteConfiguration(int configurationId)
         {
-            _configurationService.DeleteConfiguration(ownerId, configurationId);
+            var ownerId = _httpContextAccessor.HttpContext.Request.Headers["x-ownerId"];
+            if (ownerId.Count == 0)
+            {
+                throw new AggregateException("Invalid owner id");
+            }
+            _configurationService.DeleteConfiguration(int.Parse(ownerId), configurationId);
             return NoContent();
         }
 
@@ -55,9 +72,14 @@ namespace ProjectMGN.Controllers
         [Authorize]
         [HttpGet("getConfiguration/{ownerId}/{configurationId}")]
         [ValidateUserId]
-        public IActionResult GetConfigurationById(int ownerId, int configurationId)
+        public IActionResult GetConfigurationById( int configurationId)
         {
-            return Ok(_configurationService.GetConfigurationById(ownerId, configurationId));
+            var ownerId = _httpContextAccessor.HttpContext.Request.Headers["x-ownerId"];
+            if (ownerId.Count == 0)
+            {
+                throw new AggregateException("Invalid owner id");
+            }
+            return Ok(_configurationService.GetConfigurationById(int.Parse(ownerId), configurationId));
         }
     }
 }
