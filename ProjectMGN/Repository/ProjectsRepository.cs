@@ -29,7 +29,7 @@ namespace ProjectMGN.Repository
         }
         public void CreateProject(Project project, int OwnerId)
         {
-            Project isProjectExists = _dbContext.Projects.FirstOrDefault(projectFromDb => projectFromDb.OwnerId == OwnerId && projectFromDb.Name == project.Name);
+            var isProjectExists = _dbContext.Projects.FirstOrDefault(projectFromDb => projectFromDb.OwnerId == OwnerId && projectFromDb.Name == project.Name);
             if (isProjectExists != null)
             {
                 throw new InvalidOperationException("Project already exists");
