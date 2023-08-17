@@ -48,13 +48,14 @@ builder.Services.AddDbContext<ProjectMGNDB>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 builder.Services.AddScoped<IProjectConfiguration, ConfigurationRepository>();
+builder.Services.AddScoped<IActionRepository, ActionRepository>();
 
 builder.Services.AddScoped<IToken, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProjectsService, ProjectsService>();
 builder.Services.AddScoped<ISypherService, SypherService>();
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
-
+builder.Services.AddScoped<IActionService, ActionService>();
 
 
 
