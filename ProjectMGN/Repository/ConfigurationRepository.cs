@@ -25,7 +25,6 @@ namespace ProjectMGN.Repository
 
         public Configuration GetConfigurationById(int ownerId, int configurationId)
         {
-            Console.WriteLine($"ownerId{ownerId}, configId ${configurationId}");
             Configuration configuration =
                 _dbContext.Configuration.FirstOrDefault(configuration => configuration.Id == configurationId);
             if (configuration == null)
@@ -84,11 +83,11 @@ namespace ProjectMGN.Repository
 
         public List<ActionResponse> GetActions(int configurationId)
         {
-            List<ActionResponse> actions = _dbContext.Actions
+           var actions = _dbContext.Actions
                 .Where(action => action.ConfigurationId == configurationId)
                 .Join(
                     _dbContext.Comands,
-                    action => action.commandId,
+                    action => action.CommandId,
                     command => command.Id,
                     (action, command) => new ActionResponse
                     {

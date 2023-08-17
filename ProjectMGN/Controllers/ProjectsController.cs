@@ -29,7 +29,7 @@ namespace ProjectMGN.Controllers
         [HttpPost("addProject/{ownerId}")]
         public IActionResult CreateProject(AddProjectRequest project, int OwnerId)
         {
-            Project _project = new()
+            Project newProject = new()
             {
                 ConfigurationId = project.ConfigurationId,
                 Name = project.ProjectName,
@@ -38,31 +38,31 @@ namespace ProjectMGN.Controllers
                 Guid = Guid.NewGuid().ToString()
             };
 
-            _projectsService.CreateProject(_project, OwnerId);
+            _projectsService.CreateProject(newProject, OwnerId);
             return NoContent();
         }
         [Authorize]
         [HttpGet("{ownerId}")]
         [ValidateUserId]
-        public IActionResult GetAllProjects(int OwnerId)
+        public IActionResult GetAllProjects(int ownerId)
         {
-            List<Project> data = _projectsService.GetAllProjects(OwnerId);
+            var data = _projectsService.GetAllProjects(ownerId);
             return Ok(new { data });
         }
         [HttpDelete("{ownerId}/{projectId}")]
         [ValidateUserId]
         [Authorize]
-        public IActionResult DeleteProject(int OwnerId, int ProjectId)
+        public IActionResult DeleteProject(int ownerId, int projectId)
         {
-            _projectsService.DeleteProject(OwnerId, ProjectId);
+            _projectsService.DeleteProject(ownerId, projectId);
             return NoContent();
         }
         [HttpGet("getProject/{ownerId}/{projectId}")]
         [ValidateUserId]
         [Authorize]
-        public IActionResult GetProject(int OwnerId, int ProjectId)
+        public IActionResult GetProject(int ownerId, int projectId)
         {
-            Project data = _projectsService.GetProjectById(OwnerId, ProjectId);
+            var data = _projectsService.GetProjectById(ownerId, projectId);
             return Ok(new { data });
         }
 
