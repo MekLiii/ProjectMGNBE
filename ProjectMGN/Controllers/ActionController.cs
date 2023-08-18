@@ -11,19 +11,21 @@ namespace ProjectMGN.Controllers;
 public class ActionController : ControllerBase
 {
    private readonly IActionService _actionService;
-   private readonly IHttpContextAccessor _httpContextAccessor;
+   private readonly IToken _tokenService;
 
-   public ActionController(IActionService actionService,IHttpContextAccessor httpContextAccessor)
+   public ActionController(IActionService actionService,IToken tokenService)
    {
       _actionService = actionService;
-      _httpContextAccessor = httpContextAccessor;
+      _tokenService = tokenService;
    }
 
    [Authorize]
    [HttpGet("getActions")]
    public IActionResult GetActions()
    {
-      int ownerId = 1;
+      string token = HttpContext.Request.Headers.Authorization;
+      var cleanToken = token.Split(" ")[1];
+      var ownerId = _tokenService.UserIdFromToken(cleanToken);
       var data = _actionService.GetActions(ownerId);
       return Ok(new {data});
    }

@@ -7,5 +7,6 @@ namespace ProjectMGN.Interfaces.Services
     {
         string GenerateToken(User user);
         int? ValidateToken(string token);
+        int UserIdFromToken(string token);
     }
 }

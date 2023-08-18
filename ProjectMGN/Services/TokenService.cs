@@ -18,6 +18,24 @@ namespace ProjectMGN.Services
 
         }
 
+        public int UserIdFromToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+            if (jwtToken == null)
+            {
+                throw new Exception("Token is null");
+            }
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "nameid");
+            if (userIdClaim?.Value == null)
+            {
+                throw new Exception("Something went wrong with token");
+            }
+            var userId = int.Parse(userIdClaim.Value);
+           
+
+            return userId;
+        }
         public string GenerateToken(User user)
         {
             var issuser = _configuration["Jwt:issuer"];

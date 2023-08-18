@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProjectMGN.Attributes;
 using ProjectMGN.DTOS.Request;
 using ProjectMGN.DTOS.Response;
 using ProjectMGN.Interfaces.Services;
@@ -15,50 +14,42 @@ namespace ProjectMGN.Controllers
 
     {
         private readonly IConfigurationService _configurationService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IToken _tokenService;
 
-        public ConfigurationController(IConfigurationService configuration,IHttpContextAccessor httpContextAccessor)
+        public ConfigurationController(IConfigurationService configuration,IToken tokenService)
         {
             _configurationService = configuration;
-            _httpContextAccessor = httpContextAccessor;
+            _tokenService = tokenService;
         }
         [Authorize]
         [HttpPost("createConfiguration")]
-        [ValidateUserId]
         public IActionResult CreateConfiguration(Configuration configuration)
         {
-            var ownerId = _httpContextAccessor.HttpContext.Request.Headers["x-ownerId"];
-            if (ownerId.Count == 0)
-            {
-                throw new AggregateException("Invalid owner id");
-            }
-            _configurationService.CreateConfiguration(configuration, int.Parse(ownerId));
+            string token = HttpContext.Request.Headers.Authorization;
+            var cleanToken = token.Split(" ")[0];
+            var ownerId = _tokenService.UserIdFromToken(cleanToken);
+          
+            _configurationService.CreateConfiguration(configuration, ownerId);
             return NoContent();
         }
         [Authorize]
         [HttpGet("getConfigurations")]
-        [ValidateUserId]
         public IActionResult GetAllConfigurations()
         {
-            var ownerId = _httpContextAccessor.HttpContext.Request.Headers["x-ownerId"];
-            if (ownerId.Count == 0)
-            {
-                throw new AggregateException("Invalid owner id");
-            }
-            var data = _configurationService.GetAllConfigurations(int.Parse(ownerId));
+            string token = HttpContext.Request.Headers.Authorization;
+            var cleanToken = token.Split(" ")[1];
+            var ownerId = _tokenService.UserIdFromToken(cleanToken);
+            var data = _configurationService.GetAllConfigurations(ownerId);
             return Ok(new { data });
         }
         [Authorize]
         [HttpDelete("delteConfiguration/{configurationId}")]
-        [ValidateUserId]
         public IActionResult DeleteConfiguration(int configurationId)
         {
-            var ownerId = _httpContextAccessor.HttpContext.Request.Headers["x-ownerId"];
-            if (ownerId.Count == 0)
-            {
-                throw new AggregateException("Invalid owner id");
-            }
-            _configurationService.DeleteConfiguration(int.Parse(ownerId), configurationId);
+            string token = HttpContext.Request.Headers.Authorization;
+            var cleanToken = token.Split(" ")[1];
+            var ownerId = _tokenService.UserIdFromToken(cleanToken);
+            _configurationService.DeleteConfiguration(ownerId, configurationId);
             return NoContent();
         }
 
@@ -70,16 +61,14 @@ namespace ProjectMGN.Controllers
             return NoContent();
         }
         [Authorize]
-        [HttpGet("getConfiguration/{ownerId}/{configurationId}")]
-        [ValidateUserId]
+        [HttpGet("getConfiguration/{configurationId}")]
         public IActionResult GetConfigurationById( int configurationId)
         {
-            var ownerId = _httpContextAccessor.HttpContext.Request.Headers["x-ownerId"];
-            if (ownerId.Count == 0)
-            {
-                throw new AggregateException("Invalid owner id");
-            }
-            return Ok(_configurationService.GetConfigurationById(int.Parse(ownerId), configurationId));
+            string token = HttpContext.Request.Headers.Authorization;
+            string cleanToken = token.Split(" ")[1];
+            Console.WriteLine("token"  + token);
+            var ownerId = _tokenService.UserIdFromToken(cleanToken);
+            return Ok(_configurationService.GetConfigurationById(ownerId, configurationId));
         }
     }
 }
