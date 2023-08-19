@@ -8,7 +8,7 @@ using ProjectMGN.Models;
 
 namespace ProjectMGN.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class ConfigurationController : ControllerBase
 
@@ -26,14 +26,14 @@ namespace ProjectMGN.Controllers
         public IActionResult CreateConfiguration(Configuration configuration)
         {
             string token = HttpContext.Request.Headers.Authorization;
-            var cleanToken = token.Split(" ")[0];
+            var cleanToken = token.Split(" ")[1];
             var ownerId = _tokenService.UserIdFromToken(cleanToken);
           
             _configurationService.CreateConfiguration(configuration, ownerId);
             return NoContent();
         }
         [Authorize]
-        [HttpGet("getConfigurations")]
+        [HttpGet("configurations")]
         public IActionResult GetAllConfigurations()
         {
             string token = HttpContext.Request.Headers.Authorization;
@@ -43,7 +43,7 @@ namespace ProjectMGN.Controllers
             return Ok(new { data });
         }
         [Authorize]
-        [HttpDelete("delteConfiguration/{configurationId}")]
+        [HttpDelete("deleteConfiguration/{configurationId:int}")]
         public IActionResult DeleteConfiguration(int configurationId)
         {
             string token = HttpContext.Request.Headers.Authorization;
@@ -54,14 +54,14 @@ namespace ProjectMGN.Controllers
         }
 
         [Authorize]
-        [HttpPatch("updateConfiguration/{configurationId}")]
+        [HttpPatch("updateConfiguration/{configurationId:int}")]
         public IActionResult UpdateConfiguration(UpdateConfigurationRequest configurationRequestResponse,int configurationId)
         {
             _configurationService.UpdateConfiguration(configurationRequestResponse,configurationId);
             return NoContent();
         }
         [Authorize]
-        [HttpGet("getConfiguration/{configurationId}")]
+        [HttpGet("getConfiguration/{configurationId:int}")]
         public IActionResult GetConfigurationById( int configurationId)
         {
             string token = HttpContext.Request.Headers.Authorization;

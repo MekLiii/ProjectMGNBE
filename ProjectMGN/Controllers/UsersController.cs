@@ -12,7 +12,7 @@ using ProjectMGN.Services;
 
 namespace ProjectMGN.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace ProjectMGN.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("registerUser")]
+        [HttpPost("register")]
         public IActionResult RegisterUser(User user)
         {
             _userService.RegisterUser(user);
