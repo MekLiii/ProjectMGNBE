@@ -26,7 +26,6 @@ namespace ProjectMGN.Middleware
             }
             catch (Exception ex)
             {
-                //await HandleExceptionAsync(context, ex);
                 context.Response.ContentType = "application/json";
                 var response = context.Response;
                 var errorResponse = new ErrorResponse
@@ -34,7 +33,7 @@ namespace ProjectMGN.Middleware
                     Message = ex.Message,
                 };
                 var result = JsonSerializer.Serialize(errorResponse);
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsync(result);
             }
            
