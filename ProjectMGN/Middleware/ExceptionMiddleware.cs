@@ -1,17 +1,13 @@
-﻿
-
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ProjectMGN.DTOS.Response;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
+using ProjectMGN.Models;
 
 namespace ProjectMGN.Middleware
 {
     public class ExceptionMiddleware
     {
-
         private readonly RequestDelegate _next;
+
         public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -26,15 +22,12 @@ namespace ProjectMGN.Middleware
             catch (Exception ex)
             {
                 context.Response.ContentType = "application/json";
-                var errorResponse = new MessageResponse()
+                MessagesModel message = new()
                 {
-                    Message = new MessageResponse.MessageDto()
-                    {
-                        Type = "ERROR",
-                        Content = ex.Message
-                    },
+                    Content = ex.Message,
+                    Status = "ERROR"
                 };
-                var result = JsonSerializer.Serialize(errorResponse);
+                var result = JsonSerializer.Serialize(new { message });
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 await context.Response.WriteAsync(result);
             }

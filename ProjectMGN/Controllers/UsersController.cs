@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProjectMGN.Db;
 using ProjectMGN.DTOS.Request;
-using ProjectMGN.DTOS.Response;
-using ProjectMGN.Interfaces;
-using ProjectMGN.Interfaces.Repositories;
 using ProjectMGN.Interfaces.Services;
 using ProjectMGN.Models;
-using ProjectMGN.Services;
+using ProjectMGN.Messages;
+
 
 namespace ProjectMGN.Controllers
 {
@@ -29,7 +25,8 @@ namespace ProjectMGN.Controllers
         public IActionResult RegisterUser(User user)
         {
             _userService.RegisterUser(user);
-            return NoContent();
+            var message = new CustomMessages().UserCreatedSuccessFully;
+            return Ok(new { message });
         }
 
         [AllowAnonymous]

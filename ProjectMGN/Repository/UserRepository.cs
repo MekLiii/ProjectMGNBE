@@ -51,7 +51,7 @@ namespace ProjectMGN.Repository
 
             if (CheckIfUserAlreadyExists(user))
             {
-                throw new InvalidOperationException("User already exists");
+                throw new ArgumentException("User already exists");
             }
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();

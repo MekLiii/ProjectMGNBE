@@ -2,11 +2,18 @@ using ProjectMGN.Models;
 
 namespace ProjectMGN.Messages;
 
-public class Messages
+public class CustomMessages
 {
-    public MessagesModel InvalidUserName = new()
+    public readonly MessagesModel InvalidUserName = new()
     {
-        Message = "Invalid password",
+        Content = "Invalid password",
         Status = "ERROR"
     };
+
+    public readonly MessagesModel UserCreatedSuccessFully = new()
+    {
+        Content = "User created successfully",
+        Status = "SUCCESS"
+    };
+
 }
