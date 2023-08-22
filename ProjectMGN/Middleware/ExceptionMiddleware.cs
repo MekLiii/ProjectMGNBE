@@ -25,7 +25,7 @@ namespace ProjectMGN.Middleware
                 MessagesModel message = new()
                 {
                     Content = ex.Message,
-                    Status = "ERROR"
+                    Type = "ERROR"
                 };
                 var result = JsonSerializer.Serialize(new { message });
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;

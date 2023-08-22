@@ -7,13 +7,13 @@ public class CustomMessages
     public readonly MessagesModel InvalidUserName = new()
     {
         Content = "Invalid password",
-        Status = "ERROR"
+        Type = "ERROR"
     };
 
     public readonly MessagesModel UserCreatedSuccessFully = new()
     {
         Content = "User created successfully",
-        Status = "SUCCESS"
+        Type = "SUCCESS"
     };
 
 }
