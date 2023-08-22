@@ -3,7 +3,6 @@ using ProjectMGN.Models;
 using System.Security.Claims;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
-using ProjectMGN.DTOS.Request;
 using ProjectMGN.Interfaces.Services;
 
 namespace ProjectMGN.Services
@@ -79,7 +78,7 @@ namespace ProjectMGN.Services
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                int userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
+                var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
 
                 return userId;
             }

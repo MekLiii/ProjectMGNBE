@@ -1,13 +1,8 @@
-﻿using AutoMapper;
-using ProjectMGN.DTOS.Request;
+﻿using ProjectMGN.DTOS.Request;
 using ProjectMGN.DTOS.Response;
 using ProjectMGN.Interfaces.Repositories;
 using ProjectMGN.Interfaces.Services;
 using ProjectMGN.Models;
-using System.Runtime.Intrinsics.Arm;
-using System.Security.Cryptography;
-using System.Text;
-using Aes = System.Security.Cryptography.Aes;
 
 namespace ProjectMGN.Services
 {
@@ -28,7 +23,7 @@ namespace ProjectMGN.Services
         
         
 
-        public void RegisterUser(User request)
+        public void RegisterUser(RegisterUserRequest request)
         {
             User userWithEncryptedPassword = new()
             {
@@ -40,8 +35,8 @@ namespace ProjectMGN.Services
         }
         public LoginResponse LoginService(LoginRequest request)
         {
-            User user = _userRepository.Login(request);
-            string token = _tokenService.GenerateToken(user);
+            var user = _userRepository.Login(request);
+            var token = _tokenService.GenerateToken(user);
 
             LoginResponse loggedUser = new()
             {

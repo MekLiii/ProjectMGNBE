@@ -7,7 +7,7 @@ namespace ProjectMGN.Interfaces.Services
 {
     public interface IUserService
     {
-        public void RegisterUser(User request);
+        public void RegisterUser(RegisterUserRequest request);
         public LoginResponse LoginService(LoginRequest request);
         public int GetUserById(int id); 
     }

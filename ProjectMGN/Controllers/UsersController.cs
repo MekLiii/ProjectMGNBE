@@ -22,7 +22,7 @@ namespace ProjectMGN.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult RegisterUser(User user)
+        public IActionResult RegisterUser(RegisterUserRequest user)
         {
             _userService.RegisterUser(user);
             var message = new CustomMessages().UserCreatedSuccessFully;

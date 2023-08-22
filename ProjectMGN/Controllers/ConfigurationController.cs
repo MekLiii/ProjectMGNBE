@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectMGN.DTOS.Request;
-using ProjectMGN.DTOS.Response;
 using ProjectMGN.Interfaces.Services;
 using ProjectMGN.Models;
 
@@ -65,7 +63,7 @@ namespace ProjectMGN.Controllers
         public IActionResult GetConfigurationById( int configurationId)
         {
             string token = HttpContext.Request.Headers.Authorization;
-            string cleanToken = token.Split(" ")[1];
+            var cleanToken = token.Split(" ")[1];
             Console.WriteLine("token"  + token);
             var ownerId = _tokenService.UserIdFromToken(cleanToken);
             return Ok(_configurationService.GetConfigurationById(ownerId, configurationId));

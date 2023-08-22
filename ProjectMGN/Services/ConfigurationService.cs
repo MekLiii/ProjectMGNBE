@@ -15,18 +15,18 @@ namespace ProjectMGN.Services
             _projectConfiguration = projectConfiguration;
         }
 
-        public void CreateConfiguration(Configuration configuration, int OwnerId)
+        public void CreateConfiguration(Configuration configuration, int ownerId)
         {
-            _projectConfiguration.CreateConfiguration(configuration, OwnerId);
+            _projectConfiguration.CreateConfiguration(configuration, ownerId);
         }
 
-        public List<ConfigurationResponse> GetAllConfigurations(int OwnerId)
+        public List<ConfigurationResponse> GetAllConfigurations(int ownerId)
         {
-            List<Configuration> configurations = _projectConfiguration.GetAllConfigurations(OwnerId);
-            List<ConfigurationResponse> configurationsWithActions = new List<ConfigurationResponse>();
-            foreach (Configuration configuration in configurations)
+            var configurations = _projectConfiguration.GetAllConfigurations(ownerId);
+            var configurationsWithActions = new List<ConfigurationResponse>();
+            foreach (var configuration in configurations)
             {
-                ConfigurationResponse configurationWithAction = new ConfigurationResponse()
+                ConfigurationResponse configurationWithAction = new ()
                 {
                     Id = configuration.Id,
                     Name = configuration.Name,
@@ -40,8 +40,8 @@ namespace ProjectMGN.Services
 
         public ConfigurationResponse GetConfigurationById(int ownerId, int configurationId)
         {
-            Configuration configuration = _projectConfiguration.GetConfigurationById(ownerId, configurationId);
-            ConfigurationResponse configurationWithActions = new ConfigurationResponse()
+            var configuration = _projectConfiguration.GetConfigurationById(ownerId, configurationId);
+            ConfigurationResponse configurationWithActions = new()
             {
                 Id = configuration.Id,
                 Actions = _projectConfiguration.GetActions((int)configuration.Id),

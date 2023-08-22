@@ -17,9 +17,9 @@ namespace ProjectMGN.Middleware
             try
             {
               
-                var JWTtoken = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-                var userId = token.ValidateToken(JWTtoken);
-                Console.WriteLine("JWT token");
+                var jwtToken = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+                var userId = token.ValidateToken(jwtToken);
+
                 if (userId != null)
                 {
                     context.Items["User"] = userService.GetUserById(userId.Value);

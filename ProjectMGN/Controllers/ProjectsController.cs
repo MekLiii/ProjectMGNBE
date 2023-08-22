@@ -56,7 +56,7 @@ namespace ProjectMGN.Controllers
             return Ok(new { data });
         }
 
-        [HttpDelete("/{projectId}")]
+        [HttpDelete("/{projectId:int}")]
         [Authorize]
         public IActionResult DeleteProject(int ownerId, int projectId)
         {
@@ -64,7 +64,7 @@ namespace ProjectMGN.Controllers
             return NoContent();
         }
 
-        [HttpGet("getProject/{projectId}")]
+        [HttpGet("getProject/{projectId:int}")]
         [Authorize]
         public IActionResult GetProject(int projectId)
         {
