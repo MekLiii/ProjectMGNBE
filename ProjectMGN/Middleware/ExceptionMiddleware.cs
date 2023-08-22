@@ -21,25 +21,23 @@ namespace ProjectMGN.Middleware
         {
             try
             {
-
                 await _next.Invoke(context);
             }
             catch (Exception ex)
             {
                 context.Response.ContentType = "application/json";
-                var response = context.Response;
-                var errorResponse = new ErrorResponse
+                var errorResponse = new MessageResponse()
                 {
-                    Message = ex.Message,
+                    Message = new MessageResponse.MessageDto()
+                    {
+                        Type = "ERROR",
+                        Content = ex.Message
+                    },
                 };
                 var result = JsonSerializer.Serialize(errorResponse);
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 await context.Response.WriteAsync(result);
             }
-           
-
         }
-        
-
     }
 }

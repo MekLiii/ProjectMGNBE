@@ -1,5 +1,6 @@
 ﻿using ProjectMGN.Db;
 using ProjectMGN.DTOS.Request;
+using ProjectMGN.Helpers;
 using ProjectMGN.Interfaces.Repositories;
 using ProjectMGN.Interfaces.Services;
 using ProjectMGN.Models;
@@ -24,8 +25,8 @@ namespace ProjectMGN.Repository
                 {
                     return false;
                 }
-                User existingUser = _dbContext.Users.FirstOrDefault(userFromDb => userFromDb.UserName == user.UserName || userFromDb.Email == user.Email);
-                bool userExists = (existingUser != null);
+                var existingUser = _dbContext.Users.FirstOrDefault(userFromDb => userFromDb.UserName == user.UserName || userFromDb.Email == user.Email);
+                var userExists = (existingUser != null);
                 return userExists;
             }
             catch
@@ -37,7 +38,7 @@ namespace ProjectMGN.Repository
         {
             if (user.UserName == null)
             {
-                throw new ArgumentException("User name is not valid");
+                throw new ArgumentException("Invalid user name");
             }
             if(user.Email == null)
             {
@@ -54,16 +55,15 @@ namespace ProjectMGN.Repository
             }
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
-            return;
         }
         public User Login(LoginRequest request)
         {
-            User user = _dbContext.Users.FirstOrDefault(user => user.Email == request.Email);
+            var user = _dbContext.Users.FirstOrDefault(user => user.Email == request.Email);
             if (user == null)
             {
                 throw new Exception("User does not exist");
             }
-            string encryptedPassword = _sypherService.Decrypt(user.Password);
+            var encryptedPassword = _sypherService.Decrypt(user.Password);
 
             if (encryptedPassword != request.Password)
             {
@@ -78,7 +78,7 @@ namespace ProjectMGN.Repository
         }
         public int GetUserById(int id)
         {
-            User user = _dbContext.Users.FirstOrDefault(user => user.Id == id);
+            var user = _dbContext.Users.FirstOrDefault(user => user.Id == id);
             if(user == null)
             {
                 throw new InvalidOperationException("User not found");
